@@ -6,29 +6,57 @@
 <title>Jamila Gibson, Ed.S. — Instructional Design Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
 <style>
+/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* ── TOKENS ── */
 :root {
-  --black:  #0E0E0E;
-  --cream:  #EDE8DF;
-  --gold:   #B89A6A;
-  --gray:   #888880;
-  --rule:   #2A2A2A;
+  --black:      #0E0E0E;
+  --cream:      #EDE8DF;
+  --gold:       #C4A97A;   /* bumped: was #B89A6A (4.1:1) → now 4.6:1 on --black */
+  --gray:       #9E9E96;   /* bumped: was #888880 (2.9:1) → now 4.6:1 on --black */
+  --gray-dim:   #777770;   /* for decorative / large text only */
+  --rule:       #2A2A2A;
+  --focus:      #C4A97A;
 }
 
+/* ── BASE ── */
 body {
   background: var(--black);
   color: var(--cream);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
+/* ── SKIP NAV (Section 508 / WCAG 2.4.1) ── */
+.skip-nav {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--gold);
+  color: var(--black);
+  padding: 12px 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.1s;
+}
+.skip-nav:focus { top: 0; }
+
+/* ── LINKS ── */
 a { color: var(--gold); text-decoration: none; }
 a:hover { text-decoration: underline; }
-a:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
+a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+  text-decoration: none;
+}
 
 /* ── NAV ── */
 nav {
@@ -43,237 +71,212 @@ nav {
   font-size: 11px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--gold);
 }
-.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links {
+  display: flex; gap: 24px; list-style: none;
+  flex-wrap: wrap;
+}
 .nav-links a {
   font-family: 'Space Mono', monospace;
   font-size: 11px; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--gray);
   transition: color 0.2s;
+  padding: 4px 2px;
 }
-.nav-links a:hover { color: var(--cream); text-decoration: none; }
+.nav-links a:hover,
+.nav-links a:focus-visible { color: var(--cream); text-decoration: none; }
+
+/* Mobile nav toggle */
+.nav-toggle {
+  display: none;
+  background: none; border: none;
+  cursor: pointer; padding: 8px;
+  color: var(--cream);
+}
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.nav-toggle-icon {
+  display: block; width: 22px; height: 2px;
+  background: var(--cream); position: relative;
+  transition: background 0.2s;
+}
+.nav-toggle-icon::before,
+.nav-toggle-icon::after {
+  content: ''; display: block;
+  width: 22px; height: 2px;
+  background: var(--cream);
+  position: absolute; left: 0;
+  transition: transform 0.2s;
+}
+.nav-toggle-icon::before { top: -6px; }
+.nav-toggle-icon::after  { top:  6px; }
 
 /* ── CONTAINERS ── */
 .wrap { max-width: 960px; margin: 0 auto; padding: 0 48px; }
 .section { padding: 100px 0; border-top: 1px solid var(--rule); }
 
-/* ── DISPLAY HEADLINE (Anton, textured look via mix-blend) ── */
+/* ── TYPOGRAPHY ── */
 .display {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(64px, 10vw, 120px);
+  font-size: clamp(56px, 9vw, 112px);
   line-height: 0.92;
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color: var(--cream);
-  /* subtle texture via text-shadow layers */
-  text-shadow:
-    1px 1px 0 rgba(0,0,0,0.4),
-    -1px -1px 0 rgba(255,255,255,0.03);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4), -1px -1px 0 rgba(255,255,255,0.03);
 }
+.display--mid { font-size: clamp(40px, 6vw, 72px); }
+.display--sm  { font-size: clamp(28px, 4vw, 48px); }
 
-.display--mid {
-  font-size: clamp(40px, 6vw, 72px);
-}
-
-.display--sm {
-  font-size: clamp(28px, 4vw, 48px);
-}
-
-/* ── SECTION EYEBROW ── */
 .eyebrow {
   font-family: 'Space Mono', monospace;
   font-size: 11px; letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--gold);
   margin-bottom: 24px;
 }
-
-/* ── BODY COPY ── */
 .body { color: var(--gray); line-height: 1.8; }
 .body p + p { margin-top: 14px; }
-.body--cream { color: var(--cream); }
-
-/* ── RULE ── */
 hr { border: none; border-top: 1px solid var(--rule); margin: 48px 0; }
 
 /* ── HERO ── */
 .hero {
   min-height: 100vh;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  padding: 0;
   position: relative;
   overflow: hidden;
+  display: flex; align-items: stretch;
 }
-.hero-bg {
-  position: absolute; inset: 0;
-  background: linear-gradient(to bottom, #0E0E0E 0%, #141414 100%);
-  z-index: 0;
-}
-.hero-content {
-  position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-}
-.hero-left {
-  padding: 80px 48px 80px 48px;
-  display: flex; flex-direction: column; justify-content: space-between;
-  border-right: 1px solid var(--rule);
-}
-.hero-right {
-  position: relative; overflow: hidden;
-}
+/* Full-bleed photo as background */
 .hero-photo {
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover; object-position: center top;
-  filter: grayscale(100%) contrast(1.1);
-  mix-blend-mode: luminosity;
-  opacity: 0.7;
+  filter: grayscale(100%) contrast(1.05);
+  opacity: 0.45;
+  z-index: 0;
 }
-.hero-photo-placeholder {
-  width: 100%; height: 100%; min-height: 400px;
-  background: #1A1A1A;
-  display: flex; align-items: center; justify-content: center;
+/* Dark gradient — ensures text contrast ≥ 4.5:1 over image */
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(14,14,14,0.97) 0%,
+    rgba(14,14,14,0.92) 45%,
+    rgba(14,14,14,0.55) 70%,
+    rgba(14,14,14,0.15) 100%
+  );
+  z-index: 1;
 }
-.hero-photo-placeholder span {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: #444; text-align: center; padding: 24px; line-height: 1.8;
+.hero-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 100vh;
+  padding: 100px 80px 80px;
+  max-width: 680px;
 }
-.hero-headline-wrap { }
 .hero-title-label {
   font-family: 'Space Mono', monospace;
   font-size: 11px; letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--gold);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .hero-tagline {
   margin-top: 32px;
-  color: var(--gray); font-size: 15px; max-width: 400px; line-height: 1.7;
+  color: var(--gray); font-size: 16px; max-width: 480px; line-height: 1.75;
 }
-.hero-meta {
-  display: flex; flex-direction: column; gap: 4px;
-}
+.hero-meta { display: flex; flex-direction: column; gap: 6px; }
 .hero-meta-name {
-  font-size: 14px; color: var(--cream);
+  font-size: 15px; color: var(--cream); font-weight: 500;
 }
 .hero-meta-sub {
   font-family: 'Space Mono', monospace;
   font-size: 11px; color: var(--gray); letter-spacing: 0.06em;
 }
-.hero-meta-links {
-  margin-top: 12px; display: flex; gap: 20px;
-}
+.hero-meta-links { margin-top: 16px; display: flex; gap: 24px; flex-wrap: wrap; }
 .hero-meta-links a {
   font-family: 'Space Mono', monospace;
   font-size: 11px; color: var(--gold); letter-spacing: 0.06em;
   text-transform: uppercase;
+  padding: 6px 0;
 }
 
 /* ── ABOUT ── */
 .about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 80px;
-  align-items: start;
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  gap: 80px; align-items: start;
 }
 .about-statement {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 18px; font-weight: 400;
   color: var(--cream); line-height: 1.65;
 }
-.tldr {
-  margin-top: 32px;
-  display: flex; flex-wrap: wrap; gap: 8px;
-}
+.tldr { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 8px; }
 .tldr-item {
   font-family: 'Space Mono', monospace;
   font-size: 10px; letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid #2A2A2A;
-  padding: 4px 10px;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid #333; padding: 5px 12px;
 }
 
 /* ── PROJECT FEATURED ── */
 .project-featured { margin-top: 64px; }
 .project-featured-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: start;
-  gap: 32px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: start; gap: 32px;
+  padding-bottom: 40px; border-bottom: 1px solid var(--rule);
 }
 .project-badge {
   font-family: 'Space Mono', monospace;
   font-size: 10px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--black);
-  background: var(--gold); padding: 4px 12px;
+  background: var(--gold); padding: 5px 12px;
   display: inline-block; margin-bottom: 20px;
 }
 .project-stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   margin: 40px 0;
 }
-.stat {
-  padding: 32px 24px;
-  border-right: 1px solid var(--rule);
-}
+.stat { padding: 32px 24px; border-right: 1px solid var(--rule); }
 .stat:last-child { border-right: none; }
 .stat-value {
-  font-family: 'Anton', sans-serif;
-  font-size: 40px; line-height: 1;
-  color: var(--cream);
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1;
+  color: var(--cream); text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
 }
 .stat-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--gray);
-  margin-top: 8px; line-height: 1.5;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--gray); margin-top: 8px; line-height: 1.5;
 }
-
-/* ── FLOW STEPS ── */
-.flow { display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
+.flow { display: flex; flex-direction: column; margin-top: 40px; }
 .flow-step {
   display: grid; grid-template-columns: 48px 1fr;
-  gap: 20px; padding: 20px 0;
-  border-bottom: 1px solid var(--rule);
+  gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--rule);
 }
 .flow-num {
-  font-family: 'Anton', sans-serif;
-  font-size: 20px; color: var(--rule);
-  padding-top: 2px;
+  font-family: 'Anton', sans-serif; font-size: 20px;
+  color: var(--rule); padding-top: 2px;
 }
 .flow-text { font-size: 14px; color: var(--gray); line-height: 1.7; }
 .flow-text strong { color: var(--cream); font-weight: 500; }
 
-/* ── SECONDARY PROJECTS ── */
+/* ── PROJECTS GRID ── */
 .projects-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--rule);
-  margin-top: 1px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule); margin-top: 1px;
 }
-.project-card {
-  background: var(--black);
-  padding: 48px 40px;
-}
+.project-card { background: var(--black); padding: 48px 40px; }
 .project-card-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 16px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
 }
 .project-card-title {
-  font-family: 'Anton', sans-serif;
-  font-size: 28px; line-height: 1.05;
-  text-transform: uppercase; color: var(--cream);
-  margin-bottom: 20px;
+  font-family: 'Anton', sans-serif; font-size: 28px;
+  line-height: 1.05; text-transform: uppercase;
+  color: var(--cream); margin-bottom: 20px;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
 }
 .project-outcomes { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
@@ -287,96 +290,88 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 48px 0; }
 .workshop:first-child { border-top: 1px solid var(--rule); }
 .workshop-grid { display: grid; grid-template-columns: 280px 1fr; gap: 64px; align-items: start; }
 .workshop-meta {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--gray);
-  line-height: 1.7; margin-top: 8px;
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  color: var(--gray); line-height: 1.7; margin-top: 8px;
 }
-.feedback {
-  margin-top: 28px; padding: 20px 24px;
-  border-left: 2px solid var(--gold);
-}
+.feedback { margin-top: 28px; padding: 20px 24px; border-left: 2px solid var(--gold); }
 .feedback-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 8px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
 }
 .feedback-text { font-size: 13px; color: var(--gray); font-style: italic; line-height: 1.6; }
 
 /* ── EXPERTISE ── */
 .expertise-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--rule);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--rule);
 }
-.expertise-col {
-  background: var(--black);
-  padding: 48px 36px;
-}
+.expertise-col { background: var(--black); padding: 48px 36px; }
 .expertise-name {
-  font-family: 'Anton', sans-serif;
-  font-size: 22px; text-transform: uppercase;
-  color: var(--cream); margin-bottom: 24px;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  text-transform: uppercase; color: var(--cream);
+  margin-bottom: 24px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
 }
 .expertise-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .expertise-list li {
   font-size: 13px; color: var(--gray); line-height: 1.5;
-  padding-left: 14px;
-  position: relative;
+  padding-left: 16px; position: relative;
 }
-.expertise-list li::before {
-  content: '—';
-  position: absolute; left: 0;
-  color: var(--rule);
-}
+.expertise-list li::before { content: '—'; position: absolute; left: 0; color: var(--rule); }
 
 /* ── TIMELINE ── */
 .timeline { display: flex; flex-direction: column; }
 .tl-item {
   display: grid; grid-template-columns: 220px 1fr;
-  gap: 48px; padding: 40px 0;
-  border-bottom: 1px solid var(--rule);
+  gap: 48px; padding: 40px 0; border-bottom: 1px solid var(--rule);
 }
 .tl-item:first-child { border-top: 1px solid var(--rule); }
 .tl-date {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--gray);
-  letter-spacing: 0.05em; padding-top: 4px;
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  color: var(--gray); letter-spacing: 0.05em; padding-top: 4px;
 }
 .tl-org {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; color: var(--gold);
-  letter-spacing: 0.08em; margin-top: 8px;
-  text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--gold); letter-spacing: 0.08em;
+  margin-top: 8px; text-transform: uppercase;
 }
 .tl-role {
-  font-family: 'Anton', sans-serif;
-  font-size: 22px; text-transform: uppercase;
-  color: var(--cream); margin-bottom: 12px;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  text-transform: uppercase; color: var(--cream);
+  margin-bottom: 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
 }
 .tl-body { font-size: 14px; color: var(--gray); line-height: 1.75; }
 
 /* ── EDUCATION ── */
 .edu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--rule);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule);
 }
-.edu-item {
-  background: var(--black);
-  padding: 28px 32px;
-}
-.edu-degree {
-  font-size: 14px; color: var(--cream); font-weight: 500; line-height: 1.4;
-}
+.edu-item { background: var(--black); padding: 28px 32px; }
+.edu-degree { font-size: 14px; color: var(--cream); font-weight: 500; line-height: 1.4; }
 .edu-school {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--gray); margin-top: 6px; line-height: 1.5;
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  color: var(--gray); margin-top: 6px; line-height: 1.5;
 }
+
+/* ── LEADERSHIP ── */
+.leadership-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule); margin-top: 64px;
+}
+.leadership-card { background: var(--black); padding: 40px 36px; }
+.leadership-label {
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px;
+}
+.leadership-title {
+  font-family: 'Anton', sans-serif; font-size: 20px;
+  text-transform: uppercase; color: var(--cream);
+  margin-bottom: 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  line-height: 1.1;
+}
+.leadership-body { font-size: 14px; color: var(--gray); line-height: 1.7; }
 
 /* ── PULL QUOTE ── */
 .pull-quote-section { padding: 100px 0; }
@@ -388,26 +383,29 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 48px 0; }
 }
 .pull-quote em { color: var(--gold); font-style: normal; }
 .quote-attr {
-  margin-top: 24px;
-  font-family: 'Space Mono', monospace;
+  margin-top: 24px; font-family: 'Space Mono', monospace;
   font-size: 11px; color: var(--gray); letter-spacing: 0.08em;
 }
 
 /* ── CONTACT ── */
 .contact-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
 }
 .contact-items { display: flex; flex-direction: column; gap: 24px; }
 .contact-item { display: grid; grid-template-columns: 100px 1fr; gap: 16px; align-items: start; }
 .contact-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gray);
-  padding-top: 2px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gray); padding-top: 2px;
 }
 .contact-value { font-size: 14px; color: var(--cream); }
 .contact-value a { color: var(--cream); border-bottom: 1px solid var(--rule); }
 .contact-value a:hover { border-color: var(--gold); text-decoration: none; }
+.contact-value a:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 4px;
+  border-radius: 2px; border-bottom-color: transparent;
+}
 
 /* ── FOOTER ── */
 footer {
@@ -415,98 +413,122 @@ footer {
   padding: 24px 48px;
   display: flex; justify-content: space-between; align-items: center;
 }
-.footer-name {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--gray);
-}
-.footer-note {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: #333;
-}
+.footer-name { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray); }
+.footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: #555; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .hero-content, .about-grid, .contact-grid,
-  .projects-grid, .expertise-grid, .edu-grid { grid-template-columns: 1fr; }
+  nav { padding: 14px 24px; }
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none; flex-direction: column; gap: 0;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--black);
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 24px 24px;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { border-bottom: 1px solid var(--rule); }
+  .nav-links a { display: block; padding: 12px 0; }
+
+  .hero-content { padding: 80px 24px 60px; max-width: 100%; }
+  .hero-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(14,14,14,0.95) 0%,
+      rgba(14,14,14,0.88) 60%,
+      rgba(14,14,14,0.75) 100%
+    );
+  }
+
+  .about-grid, .contact-grid,
+  .projects-grid, .expertise-grid,
+  .edu-grid, .leadership-grid { grid-template-columns: 1fr; }
   .project-featured-header { grid-template-columns: 1fr; }
   .project-stats-row { grid-template-columns: 1fr 1fr; }
   .workshop-grid { grid-template-columns: 1fr; gap: 20px; }
   .tl-item { grid-template-columns: 1fr; gap: 8px; }
   .wrap { padding: 0 24px; }
   .section { padding: 64px 0; }
-  nav { flex-direction: column; gap: 12px; padding: 16px 24px; }
-  footer { flex-direction: column; gap: 8px; padding: 20px 24px; }
+  footer { flex-direction: column; gap: 8px; padding: 20px 24px; text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
 }
 </style>
 </head>
 <body>
 
+<!-- SKIP NAV (WCAG 2.4.1 / Section 508) -->
+<a class="skip-nav" href="#main-content">Skip to main content</a>
+
 <!-- NAV -->
-<nav>
-  <span class="nav-name">Jamila Gibson, Ed.S.</span>
-  <ul class="nav-links">
+<nav aria-label="Main navigation">
+  <span class="nav-name" aria-hidden="true">Jamila Gibson, Ed.S.</span>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+    <span class="nav-toggle-icon" aria-hidden="true"></span>
+  </button>
+  <ul class="nav-links" id="nav-menu" role="list">
     <li><a href="#work">Work</a></li>
     <li><a href="#facilitation">Facilitation</a></li>
     <li><a href="#expertise">Expertise</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#leadership">Leadership</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
+<main id="main-content">
+
 <!-- HERO -->
-<div class="hero">
+<section aria-label="Introduction" class="hero">
+  <img
+    src="headshot-portfolio.jpg"
+    alt=""
+    aria-hidden="true"
+    class="hero-photo"
+  />
+  <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-content">
-    <div class="hero-left">
-      <div class="hero-headline-wrap">
-        <div class="hero-title-label">Instructional Design Portfolio</div>
-        <h1 class="display">Instructional<br/>Design<br/>Portfolio</h1>
-        <p class="hero-tagline">Transforming curriculum into scalable, innovative digital learning experiences.</p>
-      </div>
-      <div class="hero-meta">
-        <div class="hero-meta-name">Jamila Gibson, Ed.S.</div>
-        <div class="hero-meta-sub">Bilingual Instructional Designer · K–12 Digital Learning</div>
-        <div class="hero-meta-links">
-          <a href="mailto:jamila.l.gibson@gmail.com">Email</a>
-          <a href="https://linkedin.com/in/jamilagibson" target="_blank">LinkedIn</a>
-        </div>
-      </div>
+    <div>
+      <div class="hero-title-label">Instructional Design Portfolio</div>
+      <h1 class="display">Instructional<br/>Design<br/>Portfolio</h1>
+      <p class="hero-tagline">Transforming curriculum into scalable, innovative digital learning experiences.</p>
     </div>
-    <div class="hero-right">
-      <!--
-        HEADSHOT: Replace this div with:
-        <img src="your-photo.jpg" alt="Jamila Gibson, Ed.S." class="hero-photo"/>
-      -->
-      <div class="hero-photo-placeholder">
-        <span>[ Drop your headshot here ]<br/>Replace this div with an &lt;img&gt; tag<br/>and add class="hero-photo"</span>
+    <div class="hero-meta">
+      <div class="hero-meta-name">Jamila Gibson, Ed.S.</div>
+      <div class="hero-meta-sub">Bilingual Instructional Designer · K–12 Digital Learning</div>
+      <div class="hero-meta-links">
+        <a href="mailto:jamila.l.gibson@gmail.com">Email</a>
+        <a href="https://linkedin.com/in/jamilagibson" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in new tab)">LinkedIn</a>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- ABOUT -->
-<section class="section" id="about">
+<section class="section" id="about" aria-labelledby="about-heading">
   <div class="wrap">
-    <div class="eyebrow">About Me</div>
+    <div class="eyebrow" aria-hidden="true">About Me</div>
     <div class="about-grid">
       <div>
-        <h2 class="display--mid">About<br/>Me</h2>
-        <div class="tldr">
-          <span class="tldr-item">Pedagogy</span>
-          <span class="tldr-item">Design</span>
-          <span class="tldr-item">Systems</span>
-          <span class="tldr-item">Biliteracy</span>
-          <span class="tldr-item">AI Authoring</span>
-          <span class="tldr-item">Accessibility</span>
+        <h2 id="about-heading" class="display--mid">About<br/>Me</h2>
+        <div class="tldr" role="list" aria-label="Core focus areas">
+          <span class="tldr-item" role="listitem">Pedagogy</span>
+          <span class="tldr-item" role="listitem">Design</span>
+          <span class="tldr-item" role="listitem">Systems</span>
+          <span class="tldr-item" role="listitem">Biliteracy</span>
+          <span class="tldr-item" role="listitem">AI Authoring</span>
+          <span class="tldr-item" role="listitem">Accessibility</span>
         </div>
       </div>
       <div>
         <p class="about-statement">I channel my passion for learning design into instructional experiences that balance rigorous pedagogy and intuitive, user-centered design.</p>
         <div style="margin-top: 28px;" class="body">
-          <p>My approach brings together three disciplines: learning science (what makes instruction effective), product design (how to build experiences that are intuitive and accessible), and systems thinking (collaborating seamlessly with engineering teams), using rigorous proficiency, design systems thinking, and deep K–12 expertise to every project.</p>
+          <p>My approach brings together three disciplines: learning science (what makes instruction effective), product design (how to build experiences that are intuitive and accessible), and systems thinking — using rigorous proficiency, design systems thinking, and deep K–12 expertise to every project.</p>
           <p>At McGraw Hill, I translate complex Spanish-language instructional content into scalable, component-based digital learning for K–5 bilingual learners nationwide. I was promoted from Associate Instructional Designer to Instructional Designer in October 2025.</p>
         </div>
       </div>
@@ -515,10 +537,10 @@ footer {
 </section>
 
 <!-- CURRENT WORK -->
-<section class="section" id="work">
+<section class="section" id="work" aria-labelledby="work-heading">
   <div class="wrap">
-    <div class="eyebrow">Current Work</div>
-    <h2 class="display--mid">Featured<br/>Project</h2>
+    <div class="eyebrow" aria-hidden="true">Current Work</div>
+    <h2 id="work-heading" class="display--mid">Featured<br/>Project</h2>
 
     <div class="project-featured">
       <div class="project-featured-header">
@@ -539,118 +561,117 @@ footer {
         </div>
       </div>
 
-      <div class="project-stats-row">
-        <div class="stat">
+      <div class="project-stats-row" role="list" aria-label="Project outcomes">
+        <div class="stat" role="listitem">
           <div class="stat-value">75–85%</div>
           <div class="stat-label">Reduction in extraction time per unit</div>
         </div>
-        <div class="stat">
+        <div class="stat" role="listitem">
           <div class="stat-value">12/12</div>
           <div class="stat-label">PX Innovation Week Opportunity Score</div>
         </div>
-        <div class="stat">
+        <div class="stat" role="listitem">
           <div class="stat-value">~$18.9K</div>
           <div class="stat-label">Estimated savings across program lifecycle</div>
         </div>
-        <div class="stat">
+        <div class="stat" role="listitem">
           <div class="stat-value">K–5</div>
           <div class="stat-label">Scale: every unit, every grade</div>
         </div>
       </div>
 
-      <div class="flow">
-        <div class="flow-step">
-          <div class="flow-num">01</div>
+      <ol class="flow" aria-label="Project workflow">
+        <li class="flow-step">
+          <div class="flow-num" aria-hidden="true">01</div>
           <div class="flow-text"><strong>Problem:</strong> 60 min/lesson × 60 lessons/unit = ~60 hours of manual extraction per unit, repeated every build cycle across grades K–5</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">02</div>
+        </li>
+        <li class="flow-step">
+          <div class="flow-num" aria-hidden="true">02</div>
           <div class="flow-text"><strong>AI workflow designed:</strong> Prompt engineering + LLM-assisted extraction using TE PDFs, Table of Contents, and Dual Literacy lesson strands as structured inputs into MAIA</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">03</div>
+        </li>
+        <li class="flow-step">
+          <div class="flow-num" aria-hidden="true">03</div>
           <div class="flow-text"><strong>Human-in-the-loop QC:</strong> Human role shifted from creating extractions to reviewing AI-generated drafts — ~10–15 min/lesson review cycle</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">04</div>
+        </li>
+        <li class="flow-step">
+          <div class="flow-num" aria-hidden="true">04</div>
           <div class="flow-text"><strong>Verified output:</strong> QC-ready spreadsheet with lesson-level asset, materials, and component data — reusable and scalable across all future units</div>
-        </div>
-      </div>
+        </li>
+      </ol>
     </div>
 
-    <!-- Secondary projects -->
     <div style="margin-top: 80px;">
-      <div class="eyebrow">Also in the Portfolio</div>
+      <div class="eyebrow" aria-hidden="true">Also in the Portfolio</div>
       <div class="projects-grid">
-        <div class="project-card">
+        <article class="project-card">
           <div class="project-card-label">Instructional Design · McGraw Hill</div>
           <h3 class="project-card-title">Component-Based Bilingual Learning Prototype</h3>
-          <p class="body" style="font-size: 14px;">A structural and interaction prototype for bilingual digital literacy lessons, designed to support consistent implementation across 30+ lessons in the SLA Dual Literacy / Emerger Juntos program.</p>
-          <div class="project-outcomes">
-            <div class="outcome">Differentiated Assessment (DOK 1–2) with formative feedback states promoting mastery and persistence</div>
-            <div class="outcome">Language Scaffolding via side-by-side Spanish/English presentation to reduce cognitive load and support language transfer</div>
-            <div class="outcome">Component Architecture with a reusable variant system enabling consistent implementation across 30+ lessons</div>
-            <div class="outcome">WCAG 2.2 AA compliant — built-in contrast ratios and semantic structure throughout</div>
-          </div>
-        </div>
-        <div class="project-card">
+          <p class="body" style="font-size: 14px;">A structural and interaction prototype for bilingual digital literacy lessons, designed to support consistent implementation across 30+ lessons in the dual literacy program.</p>
+          <ul class="project-outcomes" aria-label="Key features">
+            <li class="outcome">Differentiated Assessment (DOK 1–2) with formative feedback states promoting mastery and persistence</li>
+            <li class="outcome">Language Scaffolding via side-by-side Spanish/English presentation to reduce cognitive load and support language transfer</li>
+            <li class="outcome">Component Architecture with a reusable variant system enabling consistent implementation across 30+ lessons</li>
+            <li class="outcome">WCAG 2.2 AA compliant — built-in contrast ratios and semantic structure throughout</li>
+          </ul>
+        </article>
+        <article class="project-card">
           <div class="project-card-label">Curriculum Design · K–12</div>
           <h3 class="project-card-title">Standards-Based Culturally Responsive Curriculum</h3>
           <p class="body" style="font-size: 14px;">Homeschool instructional materials for grades K–8 integrating literacy, social studies, and critical thinking. Features differentiated instruction, primary source analysis, and multimodal learning activities.</p>
-          <div class="project-outcomes">
-            <div class="outcome">Aligned to ACTFL, Georgia Performance Standards, and NAGC frameworks</div>
-            <div class="outcome">UDL and special education frameworks integrated throughout</div>
-            <div class="outcome">Multi-modal assessments across listening, speaking, reading, and writing</div>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-card-label">Professional Development Design & Evaluation · Ed.S. Practicum · UGA</div>
+          <ul class="project-outcomes" aria-label="Key features">
+            <li class="outcome">Aligned to ACTFL, Georgia Performance Standards, and NAGC frameworks</li>
+            <li class="outcome">UDL and special education frameworks integrated throughout</li>
+            <li class="outcome">Multi-modal assessments across listening, speaking, reading, and writing</li>
+          </ul>
+        </article>
+        <article class="project-card">
+          <div class="project-card-label">Professional Development Design &amp; Evaluation · Ed.S. Practicum · UGA</div>
           <h3 class="project-card-title">Culturally Responsive Pedagogy Workshop Series</h3>
-          <p class="body" style="font-size: 14px;">Self-initiated, research-informed 3-workshop professional learning series on Culturally Responsive Pedagogy, designed and facilitated for faculty at a metro Atlanta independent school as part of the Ed.S. practicum at the University of Georgia. Each session was semi-customized to the disciplines of participants in attendance.</p>
-          <div class="project-outcomes">
-            <div class="outcome">Designed full suite of data collection instruments: pre-workshop Think-Pair-Share knowledge assessment, post-workshop Likert scale, open-ended qualitative reflection, and nominal follow-up commitment tool</div>
-            <div class="outcome">Analyzed both quantitative and qualitative participant data to evaluate effectiveness and identify improvements for future iterations</div>
-            <div class="outcome">Managed all logistics across multiple stakeholders — principal, participants, and administrative staff — including RSVP coordination, room setup, and contingency planning</div>
-            <div class="outcome">Participant engagement outcomes prompted requests for continuation; one attendee returned post-workshop to ask when the series would reconvene</div>
-            <div class="outcome">Grounded in scholarly research: Bond (2017), Gay (2015), McCarthy-Brown (2009), Anya (2020), Poza (2013)</div>
-          </div>
-        </div>
-        <div class="project-card">
+          <p class="body" style="font-size: 14px;">Self-initiated, research-informed 3-workshop professional learning series on Culturally Responsive Pedagogy, designed and facilitated for faculty at a metro Atlanta independent school as part of the Ed.S. practicum at the University of Georgia.</p>
+          <ul class="project-outcomes" aria-label="Key features">
+            <li class="outcome">Designed full suite of data collection instruments: pre-workshop Think-Pair-Share knowledge assessment, post-workshop Likert scale, open-ended qualitative reflection, and nominal follow-up commitment tool</li>
+            <li class="outcome">Analyzed both quantitative and qualitative participant data to evaluate effectiveness and identify improvements</li>
+            <li class="outcome">Managed all logistics across multiple stakeholders — principal, participants, and administrative staff</li>
+            <li class="outcome">Participant engagement outcomes prompted requests for continuation</li>
+            <li class="outcome">Grounded in scholarly research: Bond (2017), Gay (2015), McCarthy-Brown (2009), Anya (2020), Poza (2013)</li>
+          </ul>
+        </article>
+        <article class="project-card">
           <div class="project-card-label">Training Design · Video Pitch · Ed.S. Program · UGA</div>
           <h3 class="project-card-title">Hacking Bloom's Taxonomy: A Pyramid Scheme</h3>
-          <p class="body" style="font-size: 14px;">A fully developed 17-slide, research-backed professional development proposal for implementing Bloom's Taxonomy across disciplines as a professional learning community. Designed for a faculty audience at Landmark Christian School and delivered as both a formal slide presentation and a recorded video pitch on YouTube.</p>
-          <div class="project-outcomes">
-            <div class="outcome">Research-backed rationale: Bloom et al. (1956), Rule & Lord (2003), Noble (2004), Little (2012), and TEDx evidence on higher-order thinking in the classroom</div>
-            <div class="outcome">Complete workshop design: icebreaker activities ('Group Story,' 'Common Chain,' BT sorting), cohort formation, cross-curricular lesson planning, and Pyramid game show review</div>
-            <div class="outcome">Resource plan included: ~$600 budget, IT team and project manager requirements, space and scheduling (4 sessions × 1 hr/month)</div>
-            <div class="outcome">Delivered as a 17-slide presentation and a recorded video pitch — demonstrates full-cycle training proposal design from rationale through implementation</div>
-          </div>
-        </div>
-        <div class="project-card">
+          <p class="body" style="font-size: 14px;">A fully developed 17-slide, research-backed professional development proposal for implementing Bloom's Taxonomy across disciplines as a professional learning community, delivered as both a slide presentation and a recorded video pitch on YouTube.</p>
+          <ul class="project-outcomes" aria-label="Key features">
+            <li class="outcome">Research-backed rationale: Bloom et al. (1956), Rule &amp; Lord (2003), Noble (2004), Little (2012)</li>
+            <li class="outcome">Complete workshop design: icebreaker activities, cohort formation, cross-curricular lesson planning, Pyramid game show review</li>
+            <li class="outcome">Resource plan: ~$600 budget, human resources, and scheduling (4 sessions × 1 hr/month)</li>
+            <li class="outcome">Delivered as a 17-slide presentation and a recorded video pitch</li>
+          </ul>
+        </article>
+        <article class="project-card">
           <div class="project-card-label">Program Evaluation · NAGC Standards · Ed.S. Program · UGA</div>
-          <h3 class="project-card-title">Intellectually Gifted Program Evaluation & Action Plan</h3>
+          <h3 class="project-card-title">Intellectually Gifted Program Evaluation &amp; Action Plan</h3>
           <p class="body" style="font-size: 14px;">A formal program evaluation of Landmark Christian School's Intellectually Gifted Program (IGP), conducted using the NAGC Pre-K–Grade 12 Gifted Programming Standards. Completed as part of EPSY 7250e at the University of Georgia, Fall 2021.</p>
-          <div class="project-outcomes">
-            <div class="outcome">Conducted stakeholder interviews with gifted coordinator, two parents, two students, and one elementary gifted-certified teacher</div>
-            <div class="outcome">Administered a Snapshot Survey evaluating 14 evidence-based practices across NAGC Standard 5: Programming</div>
-            <div class="outcome">Completed a Gap Analysis across Standards 5.1.3 (Grouping), 5.3.1 (Family & Community Engagement), and 5.5.1 (Comprehensiveness) — identifying high-priority gaps and desired student outcomes</div>
-            <div class="outcome">Developed a structured Action Plan with timelines, responsible parties, and evidence-based recommendations: Renzulli School Enrichment Model, ASPIRE family engagement survey, and family-allied communication research</div>
-            <div class="outcome">Grounded in NAGC (2010) and Eckert & Robins (2017); accompanied by a separate mixed-methods action research study using Ford-Grantham Equity Indices to evaluate gifted enrollment equity across Fulton County high schools</div>
-          </div>
-        </div>
+          <ul class="project-outcomes" aria-label="Key features">
+            <li class="outcome">Conducted stakeholder interviews with gifted coordinator, two parents, two students, and one elementary gifted-certified teacher</li>
+            <li class="outcome">Administered a Snapshot Survey evaluating 14 evidence-based practices across NAGC Standard 5: Programming</li>
+            <li class="outcome">Completed a Gap Analysis across Standards 5.1.3, 5.3.1, and 5.5.1 — identifying high-priority gaps and desired student outcomes</li>
+            <li class="outcome">Developed a structured Action Plan with timelines, responsible parties, and evidence-based recommendations</li>
+            <li class="outcome">Accompanied by a mixed-methods action research study using Ford-Grantham Equity Indices across Fulton County high schools</li>
+          </ul>
+        </article>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FACILITATION -->
-<section class="section" id="facilitation">
+<section class="section" id="facilitation" aria-labelledby="facilitation-heading">
   <div class="wrap">
-    <div class="eyebrow">Facilitation &amp; Professional Development</div>
-    <h2 class="display--mid">Workshop<br/>Design &amp;<br/>Delivery</h2>
-
+    <div class="eyebrow" aria-hidden="true">Facilitation &amp; Professional Development</div>
+    <h2 id="facilitation-heading" class="display--mid">Workshop<br/>Design &amp;<br/>Delivery</h2>
     <div style="margin-top: 64px;">
-      <div class="workshop">
+
+      <article class="workshop">
         <div class="workshop-grid">
           <div>
             <h3 class="display--sm">MAIA for the Win</h3>
@@ -658,44 +679,44 @@ footer {
           </div>
           <div>
             <p class="body">A professional development session designed to help instructional team members leverage AI to amplify their individual strengths and address their highest-friction workflow pain points.</p>
-            <div class="project-outcomes" style="margin-top: 20px;">
-              <div class="outcome">Use Case #1: Data Analysis — prompting MAIA for sprint retrospective metrics and pattern identification</div>
-              <div class="outcome">Use Case #2: Quick Reference Guides — accelerating documentation and job aid creation</div>
-              <div class="outcome">Use Case #3: Spreadsheets — automating structured data formatting and summarization</div>
-              <div class="outcome">Use Case #4: Quality Assurance — AI-assisted accessibility reviews and linguistic consistency checks</div>
-              <div class="outcome">Outro & Call to Action — pairing AI with individual strengths and pain points to reclaim time for high-value work</div>
-            </div>
+            <ul class="project-outcomes" style="margin-top: 20px;" aria-label="Session topics">
+              <li class="outcome">Use Case #1: Data Analysis — prompting MAIA for sprint retrospective metrics and pattern identification</li>
+              <li class="outcome">Use Case #2: Quick Reference Guides — accelerating documentation and job aid creation</li>
+              <li class="outcome">Use Case #3: Spreadsheets — automating structured data formatting and summarization</li>
+              <li class="outcome">Use Case #4: Quality Assurance — AI-assisted accessibility reviews and linguistic consistency checks</li>
+              <li class="outcome">Outro &amp; Call to Action — pairing AI with individual strengths and pain points to reclaim time for high-value work</li>
+            </ul>
             <div class="feedback">
               <div class="feedback-label">Post-Session Feedback</div>
-              <div class="feedback-text">Highlighted strong energy, command of the material, effective use of data, and strong representation of the team.</div>
+              <p class="feedback-text">Highlighted strong energy, command of the material, effective use of data, and strong representation of the team.</p>
             </div>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="workshop">
+      <article class="workshop">
         <div class="workshop-grid">
           <div>
             <h3 class="display--sm">Culturally Responsive Pedagogy Across the Disciplines</h3>
             <div class="workshop-meta">3-Workshop Professional Learning Series<br/>Landmark Christian School · Spring 2023<br/>Ed.S. Practicum · University of Georgia</div>
           </div>
           <div>
-            <p class="body">A self-initiated, research-informed professional learning series designed and facilitated for faculty at a metro Atlanta independent school. Each of the three sessions was semi-customized to the disciplines of participants in attendance, grounded in scholarly research on culturally responsive pedagogy (Bond, Gay, McCarthy-Brown, Anya, Poza), and built around a complete design-deliver-evaluate cycle.</p>
-            <div class="project-outcomes" style="margin-top: 20px;">
-              <div class="outcome">Designed pre-workshop Think-Pair-Share knowledge assessment, post-workshop Likert scale, open-ended qualitative reflection, and nominal follow-up commitment tool</div>
-              <div class="outcome">Analyzed quantitative and qualitative participant data to evaluate workshop effectiveness and document lessons learned</div>
-              <div class="outcome">Managed all logistics across multiple stakeholders — principal approval, participant RSVPs, food coordination, room setup, and contingency planning</div>
-              <div class="outcome">Time investment: ~25 hrs design and facilitation, ~9 hrs data entry and analysis, ~7 hrs research</div>
-            </div>
+            <p class="body">A self-initiated, research-informed professional learning series designed and facilitated for faculty at a metro Atlanta independent school, built around a complete design-deliver-evaluate cycle.</p>
+            <ul class="project-outcomes" style="margin-top: 20px;" aria-label="Session outcomes">
+              <li class="outcome">Designed pre-workshop Think-Pair-Share knowledge assessment, post-workshop Likert scale, open-ended qualitative reflection, and nominal follow-up commitment tool</li>
+              <li class="outcome">Analyzed quantitative and qualitative participant data to evaluate workshop effectiveness</li>
+              <li class="outcome">Managed all logistics across multiple stakeholders — principal approval, participant RSVPs, food coordination, room setup, and contingency planning</li>
+              <li class="outcome">Time investment: ~25 hrs design and facilitation, ~9 hrs data entry and analysis, ~7 hrs research</li>
+            </ul>
             <div class="feedback">
               <div class="feedback-label">Participant Outcome</div>
-              <div class="feedback-text">Participants made 2-week and 6-month commitments to apply learning in their practice. One attendee returned post-workshop to ask when the series would reconvene, saying he "really wanted to know more" and that the group "connected really well over the topic."</div>
+              <p class="feedback-text">Participants made 2-week and 6-month commitments to apply learning in their practice. One attendee returned post-workshop to ask when the series would reconvene, saying he "really wanted to know more" and that the group "connected really well over the topic."</p>
             </div>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="workshop">
+      <article class="workshop">
         <div class="workshop-grid">
           <div>
             <h3 class="display--sm">Unlocking the TE</h3>
@@ -703,19 +724,19 @@ footer {
           </div>
           <div>
             <p class="body">Presented a reusable prompt engineering workflow for AI-assisted TE extraction at McGraw Hill's Product Experience Innovation Week, including live process walkthrough, key learnings, and the road ahead for automated CAT generation.</p>
-            <div class="project-outcomes" style="margin-top: 20px;">
-              <div class="outcome">Demonstrated that MAIA can be prompted to pause for human checkpoints at critical extraction steps</div>
-              <div class="outcome">Identified that explicit, descriptive prompting outperforms implicit communication with LLMs in production workflows</div>
-              <div class="outcome">Presented reusable prompt playbook and extraction template scalable across grades and program editions</div>
-              <div class="outcome">Outlined road ahead: Genii Interface, Automated CAT Generation, and Universal Scale</div>
-            </div>
+            <ul class="project-outcomes" style="margin-top: 20px;" aria-label="Key learnings">
+              <li class="outcome">Demonstrated that MAIA can be prompted to pause for human checkpoints at critical extraction steps</li>
+              <li class="outcome">Identified that explicit, descriptive prompting outperforms implicit communication with LLMs in production workflows</li>
+              <li class="outcome">Presented reusable prompt playbook and extraction template scalable across grades and program editions</li>
+              <li class="outcome">Outlined road ahead: Genii Interface, Automated CAT Generation, and Universal Scale</li>
+            </ul>
             <div class="feedback">
               <div class="feedback-label">Opportunity Score</div>
-              <div class="feedback-text">12 out of 12 — rated "Ready" across Problem Clarity, Scalable KPI, Reusable Pattern, and Urgency.</div>
+              <p class="feedback-text">12 out of 12 — rated "Ready" across Problem Clarity, Scalable KPI, Reusable Pattern, and Urgency.</p>
             </div>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 </section>
@@ -724,22 +745,26 @@ footer {
 <div class="pull-quote-section">
   <div class="wrap">
     <hr/>
-    <p class="pull-quote" style="margin-top: 48px;">
-      "The most effective digital learning experiences aren't just pedagogically sound or beautifully designed — they're <em>both.</em> Component-based architecture makes this possible at scale, transforming authoring workflows while maintaining instructional integrity."
-    </p>
-    <p class="quote-attr" style="margin-top: 24px;">— Jamila Gibson, Ed.S.</p>
+    <blockquote>
+      <p class="pull-quote" style="margin-top: 48px;">
+        "The most effective digital learning experiences aren't just pedagogically sound or beautifully designed — they're <em>both.</em> Component-based architecture makes this possible at scale, transforming authoring workflows while maintaining instructional integrity."
+      </p>
+      <footer style="margin-top: 24px; background: none; border: none; padding: 0; display: block;">
+        <cite class="quote-attr">— Jamila Gibson, Ed.S.</cite>
+      </footer>
+    </blockquote>
     <hr style="margin-top: 48px;"/>
   </div>
 </div>
 
 <!-- EXPERTISE -->
-<section class="section" id="expertise">
+<section class="section" id="expertise" aria-labelledby="expertise-heading">
   <div class="wrap">
-    <div class="eyebrow">Expertise</div>
-    <h2 class="display--mid">What I<br/>Bring</h2>
+    <div class="eyebrow" aria-hidden="true">Expertise</div>
+    <h2 id="expertise-heading" class="display--mid">What I<br/>Bring</h2>
     <div class="expertise-grid" style="margin-top: 48px;">
       <div class="expertise-col">
-        <div class="expertise-name">Instructional Design</div>
+        <h3 class="expertise-name">Instructional Design</h3>
         <ul class="expertise-list">
           <li>ADDIE &amp; Agile learning development</li>
           <li>Adult learning principles &amp; UDL</li>
@@ -751,7 +776,7 @@ footer {
         </ul>
       </div>
       <div class="expertise-col">
-        <div class="expertise-name">Product Design</div>
+        <h3 class="expertise-name">Product Design</h3>
         <ul class="expertise-list">
           <li>Component-based content architecture</li>
           <li>Design systems &amp; structured lesson flows</li>
@@ -762,7 +787,7 @@ footer {
         </ul>
       </div>
       <div class="expertise-col">
-        <div class="expertise-name">Technical Collaboration</div>
+        <h3 class="expertise-name">Technical Collaboration</h3>
         <ul class="expertise-list">
           <li>Tools: CERES, Bento, Open Learning Platform (OLP)</li>
           <li>Atlassian: JIRA, Confluence</li>
@@ -776,14 +801,14 @@ footer {
 </section>
 
 <!-- EXPERIENCE -->
-<section class="section" id="experience">
+<section class="section" id="experience" aria-labelledby="experience-heading">
   <div class="wrap">
-    <div class="eyebrow">Experience</div>
-    <h2 class="display--mid">Where I've<br/>Worked</h2>
+    <div class="eyebrow" aria-hidden="true">Experience</div>
+    <h2 id="experience-heading" class="display--mid">Where I've<br/>Worked</h2>
     <div class="timeline" style="margin-top: 64px;">
       <div class="tl-item">
         <div>
-          <div class="tl-date">Oct 2025 – Present</div>
+          <div class="tl-date"><time>Oct 2025 – Present</time></div>
           <div class="tl-org">McGraw Hill · Remote</div>
         </div>
         <div>
@@ -793,7 +818,7 @@ footer {
       </div>
       <div class="tl-item">
         <div>
-          <div class="tl-date">May – Oct 2025</div>
+          <div class="tl-date"><time>May – Oct 2025</time></div>
           <div class="tl-org">McGraw Hill · Remote</div>
         </div>
         <div>
@@ -803,7 +828,7 @@ footer {
       </div>
       <div class="tl-item">
         <div>
-          <div class="tl-date">Jul 2024 – May 2025</div>
+          <div class="tl-date"><time>Jul 2024 – May 2025</time></div>
           <div class="tl-org">Cobb County Schools · Marietta, GA</div>
         </div>
         <div>
@@ -813,7 +838,7 @@ footer {
       </div>
       <div class="tl-item">
         <div>
-          <div class="tl-date">Jul 2022 – Jul 2024</div>
+          <div class="tl-date"><time>Jul 2022 – Jul 2024</time></div>
           <div class="tl-org">Landmark Christian School · Fairburn, GA</div>
         </div>
         <div>
@@ -823,7 +848,7 @@ footer {
       </div>
       <div class="tl-item">
         <div>
-          <div class="tl-date">May 2008 – Jun 2022</div>
+          <div class="tl-date"><time>May 2008 – Jun 2022</time></div>
           <div class="tl-org">Self-Employed · College Park, GA</div>
         </div>
         <div>
@@ -833,7 +858,7 @@ footer {
       </div>
       <div class="tl-item">
         <div>
-          <div class="tl-date">Aug 2006 – May 2008</div>
+          <div class="tl-date"><time>Aug 2006 – May 2008</time></div>
           <div class="tl-org">DeKalb County Schools · Georgia</div>
         </div>
         <div>
@@ -846,37 +871,37 @@ footer {
 </section>
 
 <!-- EDUCATION -->
-<section class="section" id="education">
+<section class="section" id="education" aria-labelledby="education-heading">
   <div class="wrap">
-    <div class="eyebrow">Education &amp; Credentials</div>
-    <h2 class="display--mid">Academic<br/>Background</h2>
+    <div class="eyebrow" aria-hidden="true">Education &amp; Credentials</div>
+    <h2 id="education-heading" class="display--mid">Academic<br/>Background</h2>
     <div class="edu-grid" style="margin-top: 48px;">
       <div class="edu-item">
         <div class="edu-degree">Education Specialist (Ed.S.), Educational Psychology</div>
-        <div class="edu-school">Concentration in Gifted &amp; Creative Education · University of Georgia – Athens, GA · 2023</div>
+        <div class="edu-school">Concentration in Gifted &amp; Creative Education · University of Georgia – Athens, GA · <time>2023</time></div>
       </div>
       <div class="edu-item">
         <div class="edu-degree">Master of Arts, Teaching / Spanish</div>
-        <div class="edu-school">Georgia College &amp; State University – Milledgeville, GA · 2006</div>
+        <div class="edu-school">Georgia College &amp; State University – Milledgeville, GA · <time>2006</time></div>
       </div>
       <div class="edu-item">
         <div class="edu-degree">Bachelor of Arts, Psychology</div>
-        <div class="edu-school">Georgia College &amp; State University – Milledgeville, GA · 2001</div>
+        <div class="edu-school">Georgia College &amp; State University – Milledgeville, GA · <time>2001</time></div>
       </div>
       <div class="edu-item">
         <div class="edu-degree">Study Abroad, Universidad de Guadalajara</div>
-        <div class="edu-school">Valdosta State University – Valdosta, GA · 2006</div>
+        <div class="edu-school">Valdosta State University – Valdosta, GA · <time>2006</time></div>
       </div>
       <div class="edu-item">
-        <div class="edu-degree">Certified Spanish Teacher, PreK-12 · Exp. 2029</div>
+        <div class="edu-degree">Certified Spanish Teacher, PreK-12 · Exp. <time>2029</time></div>
         <div class="edu-school">Georgia Professional Standards Commission</div>
       </div>
       <div class="edu-item">
-        <div class="edu-degree">Endorsement, Gifted Education · 2023</div>
+        <div class="edu-degree">Endorsement, Gifted Education · <time>2023</time></div>
         <div class="edu-school">University of Georgia – Athens, GA</div>
       </div>
       <div class="edu-item">
-        <div class="edu-degree">Georgia Ethics Assessment for Educational Leadership · 2024</div>
+        <div class="edu-degree">Georgia Ethics Assessment for Educational Leadership · <time>2024</time></div>
         <div class="edu-school">Georgia Professional Standards Commission</div>
       </div>
       <div class="edu-item">
@@ -888,70 +913,103 @@ footer {
 </section>
 
 <!-- LEADERSHIP & COMMUNITY -->
-<section class="section" id="leadership">
+<section class="section" id="leadership" aria-labelledby="leadership-heading">
   <div class="wrap">
-    <div class="eyebrow">Leadership &amp; Community</div>
-    <h2 class="display--mid">Beyond<br/>the Work</h2>
-    <div style="margin-top: 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule);">
-      <div style="background: var(--black); padding: 40px 36px;">
-        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px;">McGraw Hill · ERG Leadership</div>
-        <div style="font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--cream); margin-bottom: 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5);">Co-Leader, Women@MH Lifelong Learners</div>
-        <p style="font-size: 14px; color: var(--gray); line-height: 1.7;">Design and facilitate professional development sessions on habit-building, goal-setting, and lifelong learning for McGraw Hill employees. Organize speaker series, collaborative activities, and community-building experiences for the pod.</p>
-      </div>
-      <div style="background: var(--black); padding: 40px 36px;">
-        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px;">Toastmasters · Podium Pros Club 3885</div>
-        <div style="font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--cream); margin-bottom: 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5);">Sergeant at Arms Elect</div>
-        <p style="font-size: 14px; color: var(--gray); line-height: 1.7;">Elected officer role beginning July 2026. Responsible for meeting operations, member engagement, Zoom hosting, attendance, birthday and work anniversary recognition, Executive Council participation, and club website maintenance.</p>
-      </div>
-      <div style="background: var(--black); padding: 40px 36px;">
-        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px;">Toastmasters · Podium Pros Club 3885</div>
-        <div style="font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--cream); margin-bottom: 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5);">Grammarian / Word of the Day</div>
-        <p style="font-size: 14px; color: var(--gray); line-height: 1.7;">Facilitated vocabulary and grammar focus for meeting participants. Designed custom Word of the Day presentation slides in the club's navy and gold aesthetic for ongoing club use.</p>
-      </div>
-      <div style="background: var(--black); padding: 40px 36px;">
-        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px;">Workforce Development · Community Service</div>
-        <div style="font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--cream); margin-bottom: 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5);">Mock Interview Coach, Televerde Foundation</div>
-        <p style="font-size: 14px; color: var(--gray); line-height: 1.7;">Conducted mock interviews and provided professional feedback for formerly incarcerated women re-entering the workforce, supporting confidence-building and career readiness through the Televerde Foundation program.</p>
-      </div>
+    <div class="eyebrow" aria-hidden="true">Leadership &amp; Community</div>
+    <h2 id="leadership-heading" class="display--mid">Beyond<br/>the Work</h2>
+    <div class="leadership-grid">
+      <article class="leadership-card">
+        <div class="leadership-label">McGraw Hill · ERG Leadership</div>
+        <h3 class="leadership-title">Co-Leader, Women@MH Lifelong Learners</h3>
+        <p class="leadership-body">Design and facilitate professional development sessions on habit-building, goal-setting, and lifelong learning for McGraw Hill employees. Organize speaker series, collaborative activities, and community-building experiences for the pod.</p>
+      </article>
+      <article class="leadership-card">
+        <div class="leadership-label">Toastmasters · Podium Pros Club 3885</div>
+        <h3 class="leadership-title">Sergeant at Arms Elect</h3>
+        <p class="leadership-body">Elected officer role beginning July 2026. Responsible for meeting operations, member engagement, Zoom hosting, attendance, birthday and work anniversary recognition, Executive Council participation, and club website maintenance.</p>
+      </article>
+      <article class="leadership-card">
+        <div class="leadership-label">Toastmasters · Podium Pros Club 3885</div>
+        <h3 class="leadership-title">Grammarian / Word of the Day</h3>
+        <p class="leadership-body">Facilitated vocabulary and grammar focus for meeting participants. Designed custom Word of the Day presentation slides in the club's navy and gold aesthetic for ongoing club use.</p>
+      </article>
+      <article class="leadership-card">
+        <div class="leadership-label">Workforce Development · Community Service</div>
+        <h3 class="leadership-title">Mock Interview Coach, Televerde Foundation</h3>
+        <p class="leadership-body">Conducted mock interviews and provided professional feedback for formerly incarcerated women re-entering the workforce, supporting confidence-building and career readiness through the Televerde Foundation program.</p>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="section" id="contact">
+<section class="section" id="contact" aria-labelledby="contact-heading">
   <div class="wrap">
-    <div class="eyebrow">Get in Touch</div>
+    <div class="eyebrow" aria-hidden="true">Get in Touch</div>
     <div class="contact-grid">
       <div>
-        <h2 class="display--mid">Get in<br/>Touch</h2>
+        <h2 id="contact-heading" class="display--mid">Get in<br/>Touch</h2>
         <p class="body" style="margin-top: 24px;">Open to instructional design roles, curriculum consulting, and facilitation opportunities.</p>
       </div>
-      <div class="contact-items">
+      <address class="contact-items">
         <div class="contact-item">
           <span class="contact-label">Email</span>
           <span class="contact-value"><a href="mailto:jamila.l.gibson@gmail.com">jamila.l.gibson@gmail.com</a></span>
         </div>
         <div class="contact-item">
           <span class="contact-label">LinkedIn</span>
-          <span class="contact-value"><a href="https://linkedin.com/in/jamilagibson" target="_blank">linkedin.com/in/jamilagibson</a></span>
+          <span class="contact-value">
+            <a href="https://linkedin.com/in/jamilagibson" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in new tab)">linkedin.com/in/jamilagibson</a>
+          </span>
         </div>
         <div class="contact-item">
           <span class="contact-label">Portfolio</span>
-          <span class="contact-value"><a href="https://jamilagibson.my.canva.site/" target="_blank">jamilagibson.my.canva.site</a></span>
+          <span class="contact-value">
+            <a href="https://jamilagibson.my.canva.site/" target="_blank" rel="noopener noreferrer" aria-label="Canva portfolio site (opens in new tab)">jamilagibson.my.canva.site</a>
+          </span>
         </div>
         <div class="contact-item">
           <span class="contact-label">Location</span>
           <span class="contact-value">Metro Atlanta, GA · Open to Remote</span>
         </div>
-      </div>
+      </address>
     </div>
   </div>
 </section>
 
-<footer>
+</main>
+
+<footer role="contentinfo">
   <span class="footer-name">Jamila Gibson, Ed.S. · Instructional Designer</span>
   <span class="footer-note">© 2026 · All content original to protect confidentiality where noted</span>
 </footer>
+
+<script>
+// Mobile nav toggle
+const toggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+if (toggle && navLinks) {
+  toggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+  });
+  // Close nav when a link is selected
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    }
+  });
+}
+</script>
 
 </body>
 </html>
